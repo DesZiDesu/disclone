@@ -1,6 +1,13 @@
 # Disclone 🪄
 
-A Discord bot with a single, powerful `/clone` slash command that **copies an entire server into another server by ID** — including:
+A Discord bot with two slash commands:
+
+- **`/clone`** — copies an entire server into another server by ID (see below).
+- **`/ban`** — bans a user from the server by their **user ID** (works even if they've already left).
+
+## `/clone`
+
+Copies an entire server into another server by ID — including:
 
 - ✅ Server **name** and **icon**
 - ✅ All **roles** (name, color, hoist, mentionable, **permissions**, and hierarchy order)
@@ -107,6 +114,32 @@ The bot will reply with live progress and finish with a summary of how many role
 
 ---
 
+## 6b. Using the `/ban` command
+
+Bans a user by their **user ID** — handy for banning people who have already left the server (where you can't right-click them). Run it in the server you want to ban them from:
+
+```
+/ban user_id:<the user's ID> reason:<optional> delete_days:<0-7>
+```
+
+| Option        | Required | Description                                                                     |
+| ------------- | -------- | ------------------------------------------------------------------------------- |
+| `user_id`     | ✅ Yes    | The ID of the user to ban.                                                      |
+| `reason`      | ❌ No     | Reason recorded in the audit log. Default: `No reason provided`.                |
+| `delete_days` | ❌ No     | Delete this many days (0–7) of the user's recent messages. Default: `0`.        |
+
+**Example:**
+
+```
+/ban user_id:123456789012345678 reason:Spamming delete_days:1
+```
+
+- The command is only visible to members with the **Ban Members** permission.
+- The bot also needs **Ban Members**, and its role must be **above** the target's role to ban someone currently in the server.
+- To copy a **user** ID: enable Developer Mode (above), then right-click a user → **Copy User ID**.
+
+---
+
 ## 7. Permissions cheat-sheet
 
 | Where         | Who / What       | Needs                                                          |
@@ -129,7 +162,8 @@ disclone/
 │   ├── config.js           # Loads & validates environment variables
 │   ├── cloner.js           # The core server-cloning logic
 │   └── commands/
-│       └── clone.js        # The /clone slash command
+│       ├── clone.js        # The /clone slash command
+│       └── ban.js          # The /ban slash command
 ├── .env.example
 ├── package.json
 └── README.md
